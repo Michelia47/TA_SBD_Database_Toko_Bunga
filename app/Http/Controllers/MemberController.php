@@ -29,8 +29,10 @@ class MemberController extends Controller
         return redirect()->route('member.index')->with('success', 'Data Member berhasil disimpan');
     }
     public function index() {
-        $datas = DB::select('select * from member');
-        return view('member.index')->with('datas', $datas);
+        $datas = DB::select('select * from member WHERE deleted_at is null ');
+
+        return view('member.index')
+            ->with('datas', $datas);
     }
     public function edit($id) {
         $data = DB::table('member')->where('ID_MEMBER', $id)->first();
@@ -51,11 +53,6 @@ class MemberController extends Controller
         'ALAMAT_MEMBER' => $request->ALAMAT_MEMBER,]);
     return redirect()->route('member.index')->with('success', 'Data Member berhasil diubah');
 }
-public function delete($id) {
-// Menggunakan Query Builder Laravel dan Named Bindings untuk valuesnya
-    DB::delete('DELETE FROM member WHERE ID_MEMBER = :ID_MEMBER', ['ID_MEMBER' => $id]);
-    return redirect()->route('member.index')->with('success', 'Data Admin berhasil dihapus');
-}
 
 public function search(Request $request) {
     if($request->has('search')){
@@ -64,5 +61,37 @@ public function search(Request $request) {
         $datas = DB::select('select * from member');
     }
     return view('member.index')->with('datas', $datas); 
+}
+public function softDeleted($id){
+    DB::update('UPDATE member SET deleted_at = now() WHERE ID_MEMBER = :ID_MEMBER',
+    [
+        'ID_MEMBER' => $id,
+    ]);
+    return redirect('member')->with('success', 'Data member berhasil dibuang');
+}
+public function trash() {
+    $datas = DB::select('select * from member WHERE deleted_at is not null ');
+
+    return view('member.trash')
+        ->with('datas', $datas);
+}
+
+public function restore($id){
+    DB::update('UPDATE member SET deleted_at = null WHERE ID_MEMBER = :ID_MEMBER',
+    [
+        'ID_MEMBER' => $id,
+    ]);
+    return redirect('member/trash')->with('success', 'Data member berhasil di restore');
+}
+
+
+public function delete($id) {
+    // Menggunakan Query Builder Laravel dan Named Bindings untuk valuesnya
+    DB::delete('DELETE FROM member WHERE ID_MEMBER = :ID_MEMBER', 
+    [
+        'ID_MEMBER' => $id
+    ]);
+
+    return redirect('member/trash')->with('success', 'Data member berhasil dihapus');
 }
 }

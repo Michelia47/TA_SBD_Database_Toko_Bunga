@@ -36,6 +36,11 @@ Route::post('/bunga.update/{id}', [BungaController::class, 'update'])->name('bun
 Route::post('/bunga.delete/{id}', [BungaController::class,'delete'])->name('bunga.delete');
 Route::get('/bunga.search', [BungaController::class,'search'])->name('bunga.search');
 
+Route::get('/bunga/trash', [BungaController::class, 'trash'])->name('bunga.trash');
+Route::post('/bunga/softDeleted/{id}', [BungaController::class, 'softDeleted'])->name('bunga.softDeleted');
+Route::post('/bunga/delete/{id}', [BungaController::class, 'delete'])->name('bunga.delete');
+Route::get('/bunga/restore/{id}', [BungaController::class, 'restore'])->name('bunga.restore');
+
 Route::get('/member', [MemberController::class, 'index'])->name('member.index');
 Route::get('/member.add', [MemberController::class, 'create'])->name('member.create');
 Route::post('/member.store', [MemberController::class, 'store'])->name('member.store');
@@ -43,6 +48,11 @@ Route::get('/member.edit/{id}', [MemberController::class, 'edit'])->name('member
 Route::post('/member.update/{id}', [MemberController::class, 'update'])->name('member.update');
 Route::post('/member.delete/{id}', [MemberController::class,'delete'])->name('member.delete');
 Route::get('/member.search', [MemberController::class,'search'])->name('member.search');
+
+Route::get('/member/trash', [MemberController::class, 'trash'])->name('member.trash');
+Route::post('/member/softDeleted/{id}', [MemberController::class, 'softDeleted'])->name('member.softDeleted');
+Route::post('/member/delete/{id}', [MemberController::class, 'delete'])->name('member.delete');
+Route::get('/member/restore/{id}', [MemberController::class, 'restore'])->name('member.restore');
 
 Route::get('/pemesanan', [PemesananController::class, 'index'])->name('pemesanan.index');
 Route::get('/pemesanan.add', [PemesananController::class, 'create'])->name('pemesanan.create');

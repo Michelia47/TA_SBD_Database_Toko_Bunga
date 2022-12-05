@@ -4,10 +4,33 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Member extends Model
 {
+    use HasFactory;
+    use SoftDeletes;
+
+    /**
+     * The table associated with the model.
+     *
+     * @var string
+     */
     protected $table = 'member';
+    protected $dates = ['deleted_at'];
+
+    /**
+     * The attributes that aren't mass assignable.
+     *
+     * @var array
+     */
     protected $guarded = [];
-    public $timestamps = true;
+
+    /**
+     * Indicates if the model should be timestamped.
+     *
+     * @var bool
+     */
+    public $timestamps = false;
 }
+
